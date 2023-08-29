@@ -53,7 +53,7 @@ def save():
         }
     }
 
-    if len(website) == 0 or len(password) == 0:
+        if len(website) == 0 or len(password) == 0:
         messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
     else:
         # messagebox.showinfo(title="Title", message="Message")
@@ -62,6 +62,7 @@ def save():
         #                                            f"\n Password: {password}")
 
         # if is_ok:
+        try:
             with open("data.json", "r") as data_file:
                 # WRITE, "w":
                 # json.dump(new_data, data_file, indent=5)
@@ -69,10 +70,15 @@ def save():
                 # data = json.load(data_file)
                 # UPDATE "w":
                 data = json.load(data_file)  # reading old data
-                data.update(new_data)  # update old data with new data
+        except FileNotFoundError:
+            with open("data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=5)
+        else:
+            data.update(new_data)  # update old data with new data
+
             with open("data.json", "w") as data_file:
                 json.dump(data, data_file, indent=5)  # save updated data
-
+        finally:
                 website_entry.delete(0, END)
                 pw_entry.delete(0, END)
         # else: do nothing when click "Cancel" on pop up
