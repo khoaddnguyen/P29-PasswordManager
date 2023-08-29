@@ -46,18 +46,33 @@ def save():
     website = website_entry.get()
     email = email_entry.get()
     password = pw_entry.get()
+    new_data = {
+        website: {
+            "email": email,
+            "password": password
+        }
+    }
 
     if len(website) == 0 or len(password) == 0:
         messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
     else:
         # messagebox.showinfo(title="Title", message="Message")
-        is_ok = messagebox.askyesno(title=website, message=f"Is it ok to save?"
-                                                   f"\nEmail: {email} "
-                                                   f"\n Password: {password}")
+        # is_ok = messagebox.askyesno(title=website, message=f"Is it ok to save?"
+        #                                            f"\nEmail: {email} "
+        #                                            f"\n Password: {password}")
 
-        if is_ok:
-            with open("data.txt", "a") as data_file:
-                data_file.write(f"{website} | {email} | {password}\n")
+        # if is_ok:
+            with open("data.json", "r") as data_file:
+                # WRITE, "w":
+                # json.dump(new_data, data_file, indent=5)
+                # READ "r":
+                # data = json.load(data_file)
+                # UPDATE "w":
+                data = json.load(data_file)  # reading old data
+                data.update(new_data)  # update old data with new data
+            with open("data.json", "w") as data_file:
+                json.dump(data, data_file, indent=5)  # save updated data
+
                 website_entry.delete(0, END)
                 pw_entry.delete(0, END)
         # else: do nothing when click "Cancel" on pop up
